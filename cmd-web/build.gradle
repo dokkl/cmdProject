@@ -1,0 +1,27 @@
+apply plugin: 'war'
+
+/*
+jar {
+    baseName = 'hoonBoot'
+    version =  '0.0.1-SNAPSHOT'
+}*/
+war {
+    baseName = 'hoonBootWar'
+    version =  '0.0.1-SNAPSHOT'
+}
+
+dependencies {
+    compile project(':cmd-domain')
+    compile files('src/main/webapp/WEB-INF/lib/gcm-server.jar')
+    compile files('src/main/webapp/WEB-INF/lib/gcm-json-simple-1.1.1.jar')
+
+    compile("org.springframework.boot:spring-boot-starter-web") {
+        exclude module: "spring-boot-starter-tomcat"
+    }
+
+    //providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")    //for tomcat war
+    compile("org.apache.tomcat.embed:tomcat-embed-jasper")                  //for embedded execute
+    compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+    //compile("javax.servlet:jstl:1.2")
+    //compile('javax.servlet:javax.servlet-api:3.1.0')
+}

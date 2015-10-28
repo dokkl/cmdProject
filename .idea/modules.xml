@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/cmd-domain/cmd-domain.iml" filepath="$PROJECT_DIR$/cmd-domain/cmd-domain.iml" />
+      <module fileurl="file://$PROJECT_DIR$/cmd-web/cmd-web.iml" filepath="$PROJECT_DIR$/cmd-web/cmd-web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/cmdProject.iml" filepath="$PROJECT_DIR$/cmdProject.iml" />
+    </modules>
+  </component>
+</project>
