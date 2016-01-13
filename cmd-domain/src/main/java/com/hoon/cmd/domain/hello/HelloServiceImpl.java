@@ -1,7 +1,10 @@
 package com.hoon.cmd.domain.hello;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Created by hoon on 2015-10-21.
@@ -9,14 +12,20 @@ import org.springframework.stereotype.Service;
 @Service
 public class HelloServiceImpl implements HelloService {
 
+    @Autowired
+    private HelloRepository helloRepository;
+
     @Value("${spring.jpa.database}")
     private String db;
 
     @Override
-    public Hello selectHello() {
-        Hello hello = new Hello();
-        hello.setId(12001L);
-        hello.setName("안녕하세요? db : " + db);
+    public Hello findHello(Long id) {
+        Hello hello = helloRepository.findOne(id);
         return hello;
+    }
+
+    @Override
+    public List<Hello> findByIdLimit() {
+        return helloRepository.findByIdLimit();
     }
 }

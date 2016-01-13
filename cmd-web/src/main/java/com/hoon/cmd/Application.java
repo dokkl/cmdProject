@@ -3,6 +3,8 @@ package com.hoon.cmd;
 import com.hoon.cmd.configuration.CmdDomainApplicationContextConfig;
 import com.hoon.cmd.controller.Controllers;
 import com.hoon.cmd.domain.Domains;
+import com.hoon.cmd.domain.hello.Hello;
+import com.hoon.cmd.domain.hello.HelloRepository;
 import com.hoon.cmd.sample.*;
 import lombok.Value;
 import org.slf4j.Logger;
@@ -42,6 +44,7 @@ public class Application {
         createTestDataMember(context);
         */
         createTestDataSosi(context);
+        createTestHelloData(context);
 
         String[] beanNames = context.getBeanDefinitionNames();
         Arrays.sort(beanNames);
@@ -121,5 +124,13 @@ public class Application {
         sosiRepository.save(new Sosi("티파니"));
         sosiRepository.save(new Sosi("써니"));
         sosiRepository.save(new Sosi("서현"));
+    }
+
+    private static void createTestHelloData(ConfigurableApplicationContext context) {
+        HelloRepository helloRepository = context.getBean(HelloRepository.class);
+        helloRepository.save(new Hello("안녕하세요"));
+        helloRepository.save(new Hello("곤니치와"));
+        helloRepository.save(new Hello("세세 자이지엔"));
+        helloRepository.save(new Hello("hello"));
     }
 }
