@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.support.QueryDslRepositorySupport
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
 import java.util.List;
 
 /**
@@ -14,11 +15,11 @@ import java.util.List;
  * @since : 2016-01-13
  */
 public class HelloRepositoryImpl extends QueryDslRepositorySupport implements HelloRepositoryCustom {
-	//@PersistenceContext(unitName = "emart")
-	/*@Override
+	@PersistenceContext(type = PersistenceContextType.TRANSACTION)
+	@Override
 	public void setEntityManager(EntityManager entityManager) {
 		super.setEntityManager(entityManager);
-	}*/
+	}
 
 	public HelloRepositoryImpl() {
 		super(Hello.class);
@@ -30,7 +31,7 @@ public class HelloRepositoryImpl extends QueryDslRepositorySupport implements He
 
 		QHello hello = QHello.hello;
 		JPQLQuery query = from(hello).where(hello.id.gt(2)
-									.and((hello.name.contains("세세").or(hello.name.contains("lo")))));
+			.and((hello.name.contains("세세").or(hello.name.contains("lo")))));
 		return query.list(hello);
 	}
 }
