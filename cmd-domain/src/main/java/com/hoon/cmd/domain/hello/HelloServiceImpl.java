@@ -1,5 +1,6 @@
 package com.hoon.cmd.domain.hello;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
@@ -7,11 +8,15 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class HelloServiceImpl implements HelloService {
+
+    @Value("${spring.jpa.database}")
+    private String db;
+
     @Override
     public Hello selectHello() {
         Hello hello = new Hello();
         hello.setId(12001L);
-        hello.setName("안녕하세요?");
+        hello.setName("안녕하세요? db : " + db);
         return hello;
     }
 }

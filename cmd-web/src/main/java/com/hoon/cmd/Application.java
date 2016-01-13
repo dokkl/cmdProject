@@ -4,6 +4,7 @@ import com.hoon.cmd.configuration.CmdDomainApplicationContextConfig;
 import com.hoon.cmd.controller.Controllers;
 import com.hoon.cmd.domain.Domains;
 import com.hoon.cmd.sample.*;
+import lombok.Value;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -12,6 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.Arrays;
@@ -26,16 +28,20 @@ import java.util.Date;
 @ComponentScan(basePackages={"com.hoon.cmd"})
 @Import({CmdDomainApplicationContextConfig.class})
 @EnableAutoConfiguration
+//@PropertySource("application-local.properties")
 public class Application {
     static final Logger log = LoggerFactory.getLogger(Application.class);
+
     public static void main(String[] args) {
         log.debug("==[Application main method start]==");
         ConfigurableApplicationContext context = SpringApplication.run(Application.class, args);
+
         /*
         //ConfigurableApplicationContext context = new SpringApplicationBuilder(Application.class).web(false).run(args);
 
         createTestDataMember(context);
-        //createTestDataSosi(context);
+        */
+        createTestDataSosi(context);
 
         String[] beanNames = context.getBeanDefinitionNames();
         Arrays.sort(beanNames);
@@ -43,7 +49,7 @@ public class Application {
         for (String beanName : beanNames) {
             log.debug("beanName ==> " + beanName);
         }
-        log.debug("========= loaded beanName ==============]");*/
+        log.debug("========= loaded beanName ==============]");
     }
 
     private static void createTestDataMember(ConfigurableApplicationContext context) {

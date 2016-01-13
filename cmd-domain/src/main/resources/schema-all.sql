@@ -11,7 +11,8 @@ CREATE TABLE people  (
 
 DROP TABLE member;
 DROP TABLE connect;
-
+    */
+    /*
 CREATE TABLE member (
     id bigint not null auto_increment,
 	  mail varchar(30) not null,
@@ -75,5 +76,5 @@ create table connect (
 		index(my_id),
 		index(target_id)
 );
-*/
+   */
 

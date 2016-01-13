@@ -20,9 +20,12 @@ public class HelloController {
     @Autowired
     private HelloService helloService;
 
+    @Value("${image.home}")
+    private String imageHome;
+
     @RequestMapping(value = "/hello")
     public String hello(Model model) {
-        log.debug("hello !!");
+        log.debug("imageHome!! : " + imageHome);
         Hello hello = helloService.selectHello();
         log.debug("hello id : " + hello.getId());
         log.debug("hello name : " + hello.getName());

@@ -1,3 +1,8 @@
+jar {
+    baseName = 'cmd-domain'
+    version =  '0.0.1-SNAPSHOT'
+}
+
 configurations {
     querydslapt
 }

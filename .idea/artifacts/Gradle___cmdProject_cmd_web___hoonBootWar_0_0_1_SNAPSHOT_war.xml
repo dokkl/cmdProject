@@ -91,19 +91,21 @@
           <element id="library" level="project" name="Gradle: xml-apis:xml-apis:1.0.b2" />
           <element id="library" level="project" name="Gradle: org.springframework.boot:spring-boot-starter-actuator:1.2.5.RELEASE" />
           <element id="library" level="project" name="Gradle: org.springframework.boot:spring-boot-actuator:1.2.5.RELEASE" />
-          <element id="library" level="project" name="Gradle: org.apache.tomcat.embed:tomcat-embed-jasper:8.0.23" />
-          <element id="library" level="project" name="Gradle: org.apache.tomcat.embed:tomcat-embed-core:8.0.23" />
-          <element id="library" level="project" name="Gradle: org.apache.tomcat.embed:tomcat-embed-el:8.0.23" />
-          <element id="library" level="project" name="Gradle: org.eclipse.jdt.core.compiler:ecj:4.4.2" />
           <element id="library" level="project" name="Gradle: org.springframework.boot:spring-boot-starter-thymeleaf:1.2.5.RELEASE" />
           <element id="library" level="project" name="Gradle: org.thymeleaf:thymeleaf-spring4:2.1.4.RELEASE" />
           <element id="library" level="project" name="Gradle: nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:1.2.9" />
-          <element id="library" level="project" name="Gradle: org.springframework.boot:spring-boot-starter-tomcat:1.2.5.RELEASE" />
           <element id="library" level="project" name="Gradle: org.thymeleaf:thymeleaf:2.1.4.RELEASE" />
-          <element id="library" level="project" name="Gradle: org.apache.tomcat.embed:tomcat-embed-logging-juli:8.0.23" />
-          <element id="library" level="project" name="Gradle: org.apache.tomcat.embed:tomcat-embed-websocket:8.0.23" />
           <element id="library" level="project" name="Gradle: ognl:ognl:3.0.8" />
           <element id="library" level="project" name="Gradle: org.unbescape:unbescape:1.1.0.RELEASE" />
+          <element id="library" level="project" name="Gradle: org.apache.tomcat.embed:tomcat-embed-jasper:8.0.23" />
+          <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
+          <element id="library" level="project" name="Gradle: javax.el:javax.el-api:2.2.4" />
+          <element id="library" level="project" name="Gradle: org.apache.tomcat.embed:tomcat-embed-core:8.0.23" />
+          <element id="library" level="project" name="Gradle: org.apache.tomcat.embed:tomcat-embed-el:8.0.23" />
+          <element id="library" level="project" name="Gradle: org.eclipse.jdt.core.compiler:ecj:4.4.2" />
+          <element id="library" level="project" name="Gradle: org.springframework.boot:spring-boot-starter-tomcat:1.2.5.RELEASE" />
+          <element id="library" level="project" name="Gradle: org.apache.tomcat.embed:tomcat-embed-logging-juli:8.0.23" />
+          <element id="library" level="project" name="Gradle: org.apache.tomcat.embed:tomcat-embed-websocket:8.0.23" />
         </element>
       </element>
       <element id="directory" name="META-INF">
