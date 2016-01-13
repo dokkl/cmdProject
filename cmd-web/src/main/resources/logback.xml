@@ -11,7 +11,7 @@
         </encoder>
     </appender>
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_HOME}/appting-web.log</file>
+        <file>${LOG_HOME}/cmd-web.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- 파일이 하루에 한개씩 생성된다 -->
             <fileNamePattern>${LOG_HOME}/appting-web.%d{yyyy-MM-dd}.log</fileNamePattern>
