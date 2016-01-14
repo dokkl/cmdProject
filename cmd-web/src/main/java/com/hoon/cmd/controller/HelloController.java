@@ -41,4 +41,9 @@ public class HelloController {
         }
         return "hello";
     }
+
+    @RequestMapping(value = "/index")
+    public String index() {
+        return "index";
+    }
 }

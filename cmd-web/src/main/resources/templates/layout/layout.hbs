@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    {{>layout/header}}
+    {{#block "page_style"}}{{/block}}
+</head>
+
+<body class="no-skin">
+<div class="spin" style="display: none;"></div>
+{{>layout/top}}
+<div id="main-container" class="main-container">
+	{{>layout/menu}}
+
+    {{>layout/content}}
+
+    {{>layout/footer}}
+
+</div>
+</body>
+{{>layout/scripts}}
+{{#block "page_script"}}{{/block}}
+
+</html>

@@ -1,14 +1,36 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout">
 <head>
-    <title></title>
+  <meta charset="UTF-8"/>
+  <title>대시보드</title>
+  <script type="text/javascript" src="/resources/angular.js"></script>
 </head>
+
 <body>
-  <table>
-    <tr>
-      hello id :<td th:text="${hello.id}">100</td>
-      hello name :<td th:text="${hello.name}">이름</td>
-    </tr>
-  </table>
+<section layout:fragment="content">
+  <div class="page-content" ng-app="">
+    <div class="page-header">
+      <h1>프로젝트이름 대시보드</h1>
+    </div>
+    <!-- /.page-header -->
+
+    <div class="row">
+      <div class="col-xs-12">
+        <!-- PAGE CONTENT BEGINS -->
+        hello id :<td th:text="${hello.id}">100</td>
+        hello name :<td th:text="${hello.name}">이름</td>
+      </div>
+    </div>
+    <div>
+
+    </div>
+  </div>
+</section>
+<!--<script layout:fragment="custom-script">
+	console.log('script for page');
+</script>-->
 </body>
 </html>
