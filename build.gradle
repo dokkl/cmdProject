@@ -71,7 +71,8 @@ subprojects {
         //로그 조건부 설정을 사용하려면 아래의 디팬던시를 추가해 주어야 한다
         compile 'org.codehaus.janino:janino:2.7.7'
         compile "org.springframework.boot:spring-boot-starter-batch"
-
+        compile "org.springframework.boot:spring-boot-starter-parent"
+        compile "org.springframework.boot:spring-boot-starter-security"
 
 
         //아래 4줄은 spring-boot-gradle-plugin:1.1.10.RELEASE 에서필요

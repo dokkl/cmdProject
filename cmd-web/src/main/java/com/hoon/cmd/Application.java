@@ -3,6 +3,8 @@ package com.hoon.cmd;
 import com.hoon.cmd.configuration.CmdDomainApplicationContextConfig;
 import com.hoon.cmd.controller.Controllers;
 import com.hoon.cmd.domain.Domains;
+import com.hoon.cmd.domain.User;
+import com.hoon.cmd.domain.UserRepository;
 import com.hoon.cmd.domain.hello.Hello;
 import com.hoon.cmd.domain.hello.HelloRepository;
 import com.hoon.cmd.sample.*;
@@ -12,10 +14,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.web.ErrorMvcAutoConfiguration;
+import org.springframework.boot.context.embedded.FilterRegistrationBean;
+import org.springframework.boot.context.web.ErrorPageFilter;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.Arrays;
@@ -45,6 +52,7 @@ public class Application {
         */
         createTestDataSosi(context);
         createTestHelloData(context);
+        //createUserData(context);
 
         String[] beanNames = context.getBeanDefinitionNames();
         Arrays.sort(beanNames);
@@ -133,4 +141,14 @@ public class Application {
         helloRepository.save(new Hello("세세 자이지엔"));
         helloRepository.save(new Hello("hello"));
     }
+
+    private static void createUserData(ConfigurableApplicationContext context) {
+        UserRepository userRepository = context.getBean(UserRepository.class);
+
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+        userRepository.save(new User("hoon", encoder.encode("2323")));
+        userRepository.save(new User("dokkl", "2323"));
+    }
+
 }

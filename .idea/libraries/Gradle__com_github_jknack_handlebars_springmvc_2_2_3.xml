@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.github.jknack:handlebars-springmvc:2.2.3">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.jknack/handlebars-springmvc/2.2.3/4b1ca488e99bbdc3fc0d477ff518e906456bc6d3/handlebars-springmvc-2.2.3.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.jknack/handlebars-springmvc/2.2.3/8777f65ab11e87dbd3b6f5ce2869512e6192d08b/handlebars-springmvc-2.2.3-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

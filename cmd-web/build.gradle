@@ -23,8 +23,9 @@ dependencies {
     compile("org.apache.tomcat.embed:tomcat-embed-jasper")                  //for embedded execute
     compile("javax.servlet:jstl:1.2")                                       //for embedded execute
     compile("javax.el:javax.el-api:2.2.4")                                  //for embedded execute
+
     ////compile('javax.servlet:javax.servlet-api:3.1.0')
     //compile("org.springframework.boot:spring-boot-starter-thymeleaf")
-    compile("pl.allegro.tech.boot:handlebars-spring-boot-starter:0.2.0")
+    compile("pl.allegro.tech.boot:handlebars-spring-boot-starter:0.2.4")
 
 }

@@ -44,6 +44,7 @@ public class HelloController {
 
     @RequestMapping(value = "/index")
     public String index() {
+        log.debug("index!!");
         return "index";
     }
 }
