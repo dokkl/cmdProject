@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
 import java.util.List;
 
 /**
@@ -27,7 +28,9 @@ public class HelloController {
     private String imageHome;
 
     @RequestMapping(value = "/hello/{id}")
-    public String hello(Model model, @PathVariable Long id) {
+    public String hello(Model model, @PathVariable Long id, Principal principal) {
+        String username = principal.getName();
+        model.addAttribute("username", username);
         log.debug("속성파일 읽기 imageHome!! : " + imageHome);
         log.debug("id!! : " + id);
         Hello hello = helloService.findHello(id);

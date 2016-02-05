@@ -20,13 +20,24 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(nullable = false)
     private String username;
 
+    private String nick;
+
     @JsonIgnore
+    @Column(nullable = false)
     private String encodedPassword;
 
-    public User(String username, String encodedPassword) {
-        this.username = username;
-        this.encodedPassword = encodedPassword;
+    @ManyToOne
+    @JoinColumn(name = "authorityId")
+    private Authority authority;
+
+    public void setAuthority(Authority authority) {
+        this.authority = authority;
+        if (!authority.getUserList().contains(this)) {
+            authority.getUserList().add(this);
+        }
     }
+
 }

@@ -24,7 +24,7 @@ public class LoginUserDetailsService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("요청된 사용자를 찾을수 없습니다.");
         }
-        log.debug(">> user : " + user.toString());
+        //log.debug(">> user : " + user.toString());
         return new LoginUserDetails(user);
     }
 }

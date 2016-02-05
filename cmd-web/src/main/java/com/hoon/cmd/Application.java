@@ -2,9 +2,7 @@ package com.hoon.cmd;
 
 import com.hoon.cmd.configuration.CmdDomainApplicationContextConfig;
 import com.hoon.cmd.controller.Controllers;
-import com.hoon.cmd.domain.Domains;
-import com.hoon.cmd.domain.User;
-import com.hoon.cmd.domain.UserRepository;
+import com.hoon.cmd.domain.*;
 import com.hoon.cmd.domain.hello.Hello;
 import com.hoon.cmd.domain.hello.HelloRepository;
 import com.hoon.cmd.sample.*;
@@ -23,8 +21,16 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -38,7 +44,7 @@ import java.util.Date;
 @Import({CmdDomainApplicationContextConfig.class})
 @EnableAutoConfiguration
 //@PropertySource("application-local.properties")
-public class Application {
+public class Application extends WebMvcConfigurerAdapter {
     static final Logger log = LoggerFactory.getLogger(Application.class);
 
     public static void main(String[] args) {
@@ -50,20 +56,42 @@ public class Application {
 
         createTestDataMember(context);
         */
-        createTestDataSosi(context);
-        createTestHelloData(context);
+        //createTestDataSosi(context);
+        //createTestHelloData(context);
         //createUserData(context);
 
-        String[] beanNames = context.getBeanDefinitionNames();
+        /*String[] beanNames = context.getBeanDefinitionNames();
         Arrays.sort(beanNames);
         log.debug("[========= loaded beanName ==============");
         for (String beanName : beanNames) {
             log.debug("beanName ==> " + beanName);
         }
-        log.debug("========= loaded beanName ==============]");
+        log.debug("========= loaded beanName ==============]");*/
     }
 
-    private static void createTestDataMember(ConfigurableApplicationContext context) {
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(csrfTokenAddingInterceptor());
+    }
+
+    @Bean
+    public HandlerInterceptor csrfTokenAddingInterceptor() {
+        return new HandlerInterceptorAdapter() {
+            @Override
+            public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+                CsrfToken token = (CsrfToken)request.getAttribute(CsrfToken.class.getName());
+                if (token != null && modelAndView != null) {
+                    log.debug(">> modelAndView : " + modelAndView);
+                    log.debug(">> token : " + token);
+                    modelAndView.addObject(token.getParameterName(), token);
+                } else {
+                    log.debug(">> token null");
+                }
+            }
+        };
+    }
+
+    public static void createTestDataMember(ConfigurableApplicationContext context) {
         MemberRepository memberRepository = context.getBean(MemberRepository.class);
 
         Member member1 = new Member();
@@ -144,11 +172,31 @@ public class Application {
 
     private static void createUserData(ConfigurableApplicationContext context) {
         UserRepository userRepository = context.getBean(UserRepository.class);
-
+        AuthorityRepository authorityRepository = context.getBean(AuthorityRepository.class);
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-        userRepository.save(new User("hoon", encoder.encode("2323")));
-        userRepository.save(new User("dokkl", "2323"));
+        Authority authority = new Authority();
+        authority.setAuthority("ROLE_ADMIN");
+        Authority savedAuthority = authorityRepository.save(authority);
+
+        User user = new User();
+        user.setUsername("dokkl");
+        user.setEncodedPassword(encoder.encode("2323"));
+        user.setNick("babybong");
+
+        Authority authority2 = new Authority();
+        authority2.setAuthority("ROLE_USER");
+        Authority savedAuthority2 = authorityRepository.save(authority2);
+
+        User user2 = new User();
+        user2.setUsername("hoon");
+        user2.setEncodedPassword(encoder.encode("2323"));
+        user2.setNick("jordan");
+
+        user.setAuthority(savedAuthority);
+        user2.setAuthority(savedAuthority2);
+        userRepository.save(user);
+        userRepository.save(user2);
     }
 
 }
