@@ -72,6 +72,7 @@ public class Application extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(csrfTokenAddingInterceptor());
+        registry.addInterceptor(CmdInterceptor());
     }
 
     @Bean
@@ -89,6 +90,16 @@ public class Application extends WebMvcConfigurerAdapter {
                 }
             }
         };
+    }
+
+    @Bean
+    protected HandlerInterceptor CmdInterceptor() {
+        CmdInterceptor cmdInterceptor = new CmdInterceptor();
+        cmdInterceptor.setCacheSeconds(0);
+        cmdInterceptor.setUseExpiresHeader(true);
+        cmdInterceptor.setUseCacheControlHeader(true);
+        cmdInterceptor.setUseCacheControlNoStore(true);
+        return cmdInterceptor;
     }
 
     public static void createTestDataMember(ConfigurableApplicationContext context) {

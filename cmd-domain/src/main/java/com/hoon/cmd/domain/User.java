@@ -1,6 +1,8 @@
 package com.hoon.cmd.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,6 +31,11 @@ public class User {
     @Column(nullable = false)
     private String encodedPassword;
 
+    @Column(nullable = true)
+    private String email;
+
+    //@JsonIgnore
+    //@JsonBackReference
     @ManyToOne
     @JoinColumn(name = "authorityId")
     private Authority authority;

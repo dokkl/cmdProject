@@ -2,6 +2,7 @@ package com.hoon.cmd.service;
 
 import com.hoon.cmd.domain.User;
 import lombok.Data;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,6 +16,7 @@ import java.util.List;
  */
 @Data
 public class LoginUserDetails extends org.springframework.security.core.userdetails.User {
+    @Getter
     private final User user;
 
     public LoginUserDetails(User user) {
@@ -30,4 +32,5 @@ public class LoginUserDetails extends org.springframework.security.core.userdeta
         authorities.add(new SimpleGrantedAuthority(user.getAuthority().getAuthority()));
         return authorities;
     }
+
 }

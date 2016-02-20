@@ -102,15 +102,6 @@
           <element id="library" level="project" name="Gradle: com.github.jknack:handlebars-springmvc:2.2.3" />
           <element id="library" level="project" name="Gradle: com.github.jknack:handlebars:2.2.3" />
           <element id="library" level="project" name="Gradle: org.antlr:antlr4-runtime:4.5" />
-          <element id="library" level="project" name="Gradle: org.apache.tomcat.embed:tomcat-embed-jasper:8.0.23" />
-          <element id="library" level="project" name="Gradle: javax.servlet:jstl:1.2" />
-          <element id="library" level="project" name="Gradle: javax.el:javax.el-api:2.2.4" />
-          <element id="library" level="project" name="Gradle: org.apache.tomcat.embed:tomcat-embed-core:8.0.23" />
-          <element id="library" level="project" name="Gradle: org.apache.tomcat.embed:tomcat-embed-el:8.0.23" />
-          <element id="library" level="project" name="Gradle: org.eclipse.jdt.core.compiler:ecj:4.4.2" />
-          <element id="library" level="project" name="Gradle: org.springframework.boot:spring-boot-starter-tomcat:1.2.5.RELEASE" />
-          <element id="library" level="project" name="Gradle: org.apache.tomcat.embed:tomcat-embed-logging-juli:8.0.23" />
-          <element id="library" level="project" name="Gradle: org.apache.tomcat.embed:tomcat-embed-websocket:8.0.23" />
         </element>
       </element>
       <element id="directory" name="META-INF">

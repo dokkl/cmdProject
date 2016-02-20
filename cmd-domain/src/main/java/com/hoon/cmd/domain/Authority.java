@@ -1,5 +1,8 @@
 package com.hoon.cmd.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,6 +27,7 @@ public class Authority {
     @Column(nullable = false)
     private String authority;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "authority")
     private List<User> userList = new ArrayList<User>();
 }

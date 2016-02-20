@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configurers.GlobalAuthenticationConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,7 +14,10 @@ import org.springframework.security.config.annotation.web.servlet.configuration.
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.security.web.util.matcher.AndRequestMatcher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 
 @Configuration
 @EnableWebMvcSecurity
@@ -27,11 +31,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        //http.csrf().disable();
+        http.csrf().disable();
+        /*http.csrf().requireCsrfProtectionMatcher(
+            new AndRequestMatcher(
+                new NegatedRequestMatcher(new AntPathRequestMatcher("/admin/rest*//**", HttpMethod.GET.toString())),
+                new NegatedRequestMatcher(new AntPathRequestMatcher("/admin/rest*//**", HttpMethod.HEAD.toString())),
+                new NegatedRequestMatcher(new AntPathRequestMatcher("/admin/rest*//**", HttpMethod.OPTIONS.toString())),
+                new NegatedRequestMatcher(new AntPathRequestMatcher("/admin/rest*//**", HttpMethod.TRACE.toString()))
+            )
+        );*/
+        //http.addFilterAfter(new CsrfTokenResponseCookieBindingFilter(), CsrfFilter.class); // CSRF tokens handling
 
         log.debug("HttpSecurity >>>");
         http.authorizeRequests()
-                .antMatchers("/hello/**").hasRole("ADMIN")
+                .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/normal/**").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/loginForm").permitAll()
                 .anyRequest().authenticated();

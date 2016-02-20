@@ -1,4 +1,10 @@
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+
 apply plugin: 'war'
+//apply plugin: 'com.bmuschko.cargo'
+//apply plugin: 'com.bmuschko.cargo-base'
+apply plugin: 'ssh'
 
 /*
 jar {
@@ -10,6 +16,17 @@ war {
     version =  '0.0.1-SNAPSHOT'
 }
 
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        //classpath("com.bmuschko:gradle-cargo-plugin:2.2.2")
+        classpath 'org.hidetake:gradle-ssh-plugin:0.1.7'
+    }
+}
+
 dependencies {
     compile project(':cmd-domain')
     compile files('src/main/webapp/WEB-INF/lib/gcm-server.jar')
@@ -19,13 +36,104 @@ dependencies {
         exclude module: "spring-boot-starter-tomcat"
     }
 
-    //providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")    //for tomcat war
-    compile("org.apache.tomcat.embed:tomcat-embed-jasper")                  //for embedded execute
-    compile("javax.servlet:jstl:1.2")                                       //for embedded execute
-    compile("javax.el:javax.el-api:2.2.4")                                  //for embedded execute
+    providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")    //for tomcat war
+    //compile("org.apache.tomcat.embed:tomcat-embed-jasper")                  //for embedded execute
+    //compile("javax.servlet:jstl:1.2")                                       //for embedded execute
+    //compile("javax.el:javax.el-api:2.2.4")                                  //for embedded execute
 
     ////compile('javax.servlet:javax.servlet-api:3.1.0')
     //compile("org.springframework.boot:spring-boot-starter-thymeleaf")
     compile("pl.allegro.tech.boot:handlebars-spring-boot-starter:0.2.4")
 
+    //def cargoVersion = '1.4.5'
+    //cargo "org.codehaus.cargo:cargo-core-uberjar:$cargoVersion",
+    //        "org.codehaus.cargo:cargo-ant:$cargoVersion"
+}
+
+/*cargo {
+    containerId = "tomcat7x"
+    port = 8080
+
+    deployable {
+        context = "cmdProject"
+    }
+
+    remote {
+        username = "tomcat"
+        password = "manager"
+        hostname = "localhost"
+    }
+
+    local {
+        homeDir = file('C:/dev/apache-tomcat-7.0.39')
+        outputFile = file('build/output.log')
+        timeout = 60000
+
+        containerProperties {
+            property 'cargo.tomcat.ajp.port', 9099
+        }
+    }
+}
+
+
+
+cargoRedeployRemote {
+    dependsOn war
+}
+
+cargoDeployRemote {
+    dependsOn war
+}*/
+
+remotes {
+    web01 {
+        host = 'dokkl23.cafe24.com'        //192.xxx.x.x
+        user = 'dokkl23'
+        password = 'hoon2323'
+        //identity = file('build/libs/hoonBootWar-0.0.1-SNAPSHOT.war')
+    }
+}
+
+ssh {
+    config(StrictHostKeyChecking: 'no') // needed for deploying to EC2
+}
+
+task deployWar(type: SshTask, dependsOn: 'war') {
+    def tomcatBin = "/home/hosting_users/dokkl23/tomcat/bin"
+    def tomcatHome = '/home/hosting_users/dokkl23/tomcat/webapps'
+    def warName = "ROOT"
+    session(remotes.web01) {
+        println "Uploading new war " + war.archivePath.absolutePath
+        put(war.archivePath.absolutePath,"${tomcatHome}/${warName}.war.new")
+
+        println "Permission change"
+        execute("chmod 777 ${tomcatHome}/${warName}.war")
+        execute("chmod 777 ${tomcatHome}/${warName}.war.new")
+        //println "removing old war"
+        //execute("rm ${tomcatHome}/${warName}.war")
+        println "current war backup"
+        execute("mv ${tomcatHome}/${warName}.war ${tomcatHome}/" + getDateTime() + "_${warName}.bak")
+
+        println "activating new war"
+        execute("mv ${tomcatHome}/${warName}.war{.new,}")
+
+
+    }
+}
+
+task tomcatStopStart(type: SshTask, dependsOn: 'war') {
+    def tomcatBin = "/home/hosting_users/dokkl23/tomcat/bin"
+    session(remotes.web01) {
+        println "tomcat stop"
+        execute("${tomcatBin}/catalina.sh stop")
+
+        println "tomcat start"
+        execute("${tomcatBin}/catalina.sh start")
+    }
+}
+
+def getDateTime() {
+    DateFormat df = new SimpleDateFormat("YYYYMMddHHmmss");
+
+    return df.format(new Date());
 }
