@@ -1,7 +1,7 @@
-package com.hoon.cmd.service;
+package com.hoon.cmd.service.admin;
 
-import com.hoon.cmd.domain.Authority;
-import com.hoon.cmd.domain.AuthorityRepository;
+import com.hoon.cmd.domain.admin.Authority;
+import com.hoon.cmd.domain.admin.AuthorityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

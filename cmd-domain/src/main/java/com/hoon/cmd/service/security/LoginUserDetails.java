@@ -1,10 +1,9 @@
-package com.hoon.cmd.service;
+package com.hoon.cmd.service.security;
 
-import com.hoon.cmd.domain.User;
+import com.hoon.cmd.domain.admin.User;
 import lombok.Data;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.ArrayList;

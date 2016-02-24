@@ -1,6 +1,6 @@
-package com.hoon.cmd.service;
+package com.hoon.cmd.service.admin;
 
-import com.hoon.cmd.domain.Authority;
+import com.hoon.cmd.domain.admin.Authority;
 
 import java.util.List;
 

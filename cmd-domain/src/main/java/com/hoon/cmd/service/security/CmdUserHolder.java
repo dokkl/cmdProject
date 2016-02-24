@@ -1,10 +1,8 @@
 package com.hoon.cmd.service.security;
 
-import com.hoon.cmd.domain.User;
-import com.hoon.cmd.service.LoginUserDetails;
+import com.hoon.cmd.domain.admin.User;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 /**
@@ -26,6 +24,7 @@ public class CmdUserHolder {
             user = ((LoginUserDetails)principal).getUser();
         } else {
             //String username = principal.toString();
+            //주석처리
             user = new User();
             user.setUsername("익명");
         }

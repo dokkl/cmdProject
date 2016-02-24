@@ -18,4 +18,9 @@ public class MainController {
         //model.addAttribute("username", principal.getName());
         return "dashboard";
     }
+
+    @RequestMapping("/board")
+    public String board() {
+        return "board";
+    }
 }

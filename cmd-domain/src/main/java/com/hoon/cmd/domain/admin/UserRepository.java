@@ -1,4 +1,4 @@
-package com.hoon.cmd.domain;
+package com.hoon.cmd.domain.admin;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

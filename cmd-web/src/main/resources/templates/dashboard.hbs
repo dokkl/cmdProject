@@ -1,6 +1,6 @@
 {{#partial "title"}}대쉬보드{{/partial}}
 {{#partial "content"}}
-	<div class="page-content">
+	<div class="page-content" ng-app="myApp">
 		<div class="page-header">
 			<h1>{{projectName}} {{message "menu.dashboard" default="대시보드"}}</h1>
 		</div>
@@ -10,13 +10,248 @@
 			<div class="col-xs-12">
 				대시보드입니다.
 			</div>
+            <div class="col-sm-5" ng-controller="defaultCtrl">
+                <div class="widget-box">
+                    <div class="widget-header widget-header-flat widget-header-small">
+                        <h5 class="widget-title">
+                            <i class="ace-icon fa fa-signal"></i>
+                            Traffic Sources
+                        </h5>
+
+                        <div class="widget-toolbar no-border">
+                            <div class="inline dropdown-hover">
+                                <button class="btn btn-minier btn-primary">
+                                    This Week
+                                    <i class="ace-icon fa fa-angle-down icon-on-right bigger-110"></i>
+                                </button>
+
+                                <ul class="dropdown-menu dropdown-menu-right dropdown-125 dropdown-lighter dropdown-close dropdown-caret">
+                                    <li class="active">
+                                        <a href="#" class="blue">
+                                            <i class="ace-icon fa fa-caret-right bigger-110">&nbsp;</i>
+                                            This Week
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a href="#">
+                                            <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
+                                            Last Week
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a href="#">
+                                            <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
+                                            This Month
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a href="#">
+                                            <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
+                                            Last Month
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <!-- #section:plugins/charts.flotchart -->
+                            <div id="piechart-placeholder"></div>
+
+                            <!-- /section:plugins/charts.flotchart -->
+                            <div class="hr hr8 hr-double"></div>
+
+                            <div class="clearfix">
+                                <!-- #section:custom/extra.grid -->
+                                <div class="grid3">
+															<span class="grey">
+																<i class="ace-icon fa fa-facebook-square fa-2x blue"></i>
+																&nbsp; likes
+															</span>
+                                    <h4 class="bigger pull-right">1,255</h4>
+                                </div>
+
+                                <div class="grid3">
+															<span class="grey">
+																<i class="ace-icon fa fa-twitter-square fa-2x purple"></i>
+																&nbsp; tweets
+															</span>
+                                    <h4 class="bigger pull-right">941</h4>
+                                </div>
+
+                                <div class="grid3">
+															<span class="grey">
+																<i class="ace-icon fa fa-pinterest-square fa-2x red"></i>
+																&nbsp; pins
+															</span>
+                                    <h4 class="bigger pull-right">1,050</h4>
+                                </div>
+
+                                <!-- /section:custom/extra.grid -->
+                            </div>
+                        </div><!-- /.widget-main -->
+                    </div><!-- /.widget-body -->
+                </div><!-- /.widget-box -->
+            </div><!-- /.col -->
 		</div>
 	</div>
 {{/partial}}
 {{#partial "page_script"}}
+    <script src="/js/app.js"></script>
 	<script type="text/javascript">
-		$(document).ready(function () {
-		});
+		/*$(document).ready(function () {
+		});*/
+        App.controller("defaultCtrl", function($scope) {
+            var placeholder = $('#piechart-placeholder').css({'width':'90%' , 'min-height':'150px'});
+            $scope.data = [
+                { label: "쿠팡",  data: 58.7, color: "#68BC31"},
+                { label: "티몬",  data: 14.5, color: "#2091CF"},
+                { label: "Emart",  data: 8.2, color: "#AF4E96"},
+                { label: "G마켓",  data: 8.6, color: "#DA5430"},
+                { label: "11번가",  data: 10, color: "#FEE074"}
+            ];
+            var data = $scope.data;
+
+            function drawPieChart(placeholder, data, position) {
+                $.plot(placeholder, data, {
+                    series: {
+                        pie: {
+                            show: true,
+                            tilt:0.8,
+                            highlight: {
+                                opacity: 0.25
+                            },
+                            stroke: {
+                                color: '#fff',
+                                width: 2
+                            },
+                            startAngle: 2
+                        }
+                    },
+                    legend: {
+                        show: true,
+                        position: position || "ne",
+                        labelBoxBorderColor: null,
+                        margin:[-30,15]
+                    }
+                    ,
+                    grid: {
+                        hoverable: true,
+                        clickable: true
+                    }
+                })
+            }
+            drawPieChart(placeholder, data);
+
+            /**
+             we saved the drawing function and the data to redraw with different position later when switching to RTL mode dynamically
+             so that's not needed actually.
+             */
+            placeholder.data('chart', data);
+            placeholder.data('draw', drawPieChart);
+
+            //pie chart tooltip example
+            var $tooltip = $("<div class='tooltip top in'><div class='tooltip-inner'></div></div>").hide().appendTo('body');
+            var previousPoint = null;
+
+            placeholder.on('plothover', function (event, pos, item) {
+                if(item) {
+                    if (previousPoint != item.seriesIndex) {
+                        previousPoint = item.seriesIndex;
+                        var tip = item.series['label'] + " : " + item.series['percent']+'%';
+                        $tooltip.show().children(0).text(tip);
+                    }
+                    $tooltip.css({top:pos.pageY + 10, left:pos.pageX + 10});
+                } else {
+                    $tooltip.hide();
+                    previousPoint = null;
+                }
+
+            });
+
+            /////////////////////////////////////
+            $(document).one('ajaxloadstart.page', function(e) {
+                $tooltip.remove();
+            });
+        });
+
+        /*jQuery(function($) {
+            var placeholder = $('#piechart-placeholder').css({'width':'90%' , 'min-height':'150px'});
+            var data = [
+                { label: "쿠팡",  data: 58.7, color: "#68BC31"},
+                { label: "티몬",  data: 14.5, color: "#2091CF"},
+                { label: "Emart",  data: 8.2, color: "#AF4E96"},
+                { label: "G마켓",  data: 8.6, color: "#DA5430"},
+                { label: "11번가",  data: 10, color: "#FEE074"}
+            ]
+            function drawPieChart(placeholder, data, position) {
+                $.plot(placeholder, data, {
+                    series: {
+                        pie: {
+                            show: true,
+                            tilt:0.8,
+                            highlight: {
+                                opacity: 0.25
+                            },
+                            stroke: {
+                                color: '#fff',
+                                width: 2
+                            },
+                            startAngle: 2
+                        }
+                    },
+                    legend: {
+                        show: true,
+                        position: position || "ne",
+                        labelBoxBorderColor: null,
+                        margin:[-30,15]
+                    }
+                    ,
+                    grid: {
+                        hoverable: true,
+                        clickable: true
+                    }
+                })
+            }
+            drawPieChart(placeholder, data);
+
+            /!**
+             we saved the drawing function and the data to redraw with different position later when switching to RTL mode dynamically
+             so that's not needed actually.
+             *!/
+            placeholder.data('chart', data);
+            placeholder.data('draw', drawPieChart);
+
+            //pie chart tooltip example
+            var $tooltip = $("<div class='tooltip top in'><div class='tooltip-inner'></div></div>").hide().appendTo('body');
+            var previousPoint = null;
+
+            placeholder.on('plothover', function (event, pos, item) {
+                if(item) {
+                    if (previousPoint != item.seriesIndex) {
+                        previousPoint = item.seriesIndex;
+                        var tip = item.series['label'] + " : " + item.series['percent']+'%';
+                        $tooltip.show().children(0).text(tip);
+                    }
+                    $tooltip.css({top:pos.pageY + 10, left:pos.pageX + 10});
+                } else {
+                    $tooltip.hide();
+                    previousPoint = null;
+                }
+
+            });
+
+            /////////////////////////////////////
+            $(document).one('ajaxloadstart.page', function(e) {
+                $tooltip.remove();
+            });
+        })*/
+
 	</script>
 {{/partial}}
 

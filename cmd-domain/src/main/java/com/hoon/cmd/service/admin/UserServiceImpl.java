@@ -1,7 +1,7 @@
-package com.hoon.cmd.service;
+package com.hoon.cmd.service.admin;
 
-import com.hoon.cmd.domain.User;
-import com.hoon.cmd.domain.UserRepository;
+import com.hoon.cmd.domain.admin.User;
+import com.hoon.cmd.domain.admin.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;

@@ -1,7 +1,7 @@
-package com.hoon.cmd.service;
+package com.hoon.cmd.service.security;
 
-import com.hoon.cmd.domain.User;
-import com.hoon.cmd.domain.UserRepository;
+import com.hoon.cmd.domain.admin.User;
+import com.hoon.cmd.domain.admin.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

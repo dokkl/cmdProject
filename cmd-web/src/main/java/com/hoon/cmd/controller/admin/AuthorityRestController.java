@@ -1,7 +1,7 @@
 package com.hoon.cmd.controller.admin;
 
-import com.hoon.cmd.domain.Authority;
-import com.hoon.cmd.service.AuthorityService;
+import com.hoon.cmd.domain.admin.Authority;
+import com.hoon.cmd.service.admin.AuthorityService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;

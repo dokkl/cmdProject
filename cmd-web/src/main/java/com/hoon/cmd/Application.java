@@ -1,37 +1,32 @@
 package com.hoon.cmd;
 
 import com.hoon.cmd.configuration.CmdDomainApplicationContextConfig;
-import com.hoon.cmd.controller.Controllers;
-import com.hoon.cmd.domain.*;
+import com.hoon.cmd.domain.admin.Authority;
+import com.hoon.cmd.domain.admin.AuthorityRepository;
+import com.hoon.cmd.domain.admin.User;
+import com.hoon.cmd.domain.admin.UserRepository;
 import com.hoon.cmd.domain.hello.Hello;
 import com.hoon.cmd.domain.hello.HelloRepository;
 import com.hoon.cmd.sample.*;
-import lombok.Value;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.web.ErrorMvcAutoConfiguration;
-import org.springframework.boot.context.embedded.FilterRegistrationBean;
-import org.springframework.boot.context.web.ErrorPageFilter;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
 import java.util.Date;
 
 /**
