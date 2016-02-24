@@ -19,33 +19,51 @@ App.controller('AppController', ['$scope', 'BoardService', function($scope, Boar
 
 
 
-	self.pageCtrl =[];
-	self.pageBtnCnt = 5;
+	self.pageBtnArray =[];
+	self.btnArrayDefaultCnt = 5;
 	self.btnChunkIndex = 0;
 	self.startPageBtnNumber = 1;
+	self.currentChunkNumber = 1;
+	self.btnChunkCnt = 0;
 
 	self.settingPageCtrl = function(totalPages, currentPage) {
 
-		//var btnChunkCnt = parseInt(totalPages / self.pageBtnCnt) + 1;   //버튼덩어리 수
+		self.btnChunkCnt = parseInt(totalPages / self.btnArrayDefaultCnt) + 1;   //버튼덩어리 수
+		var lastChunkBtnCnt = totalPages % self.btnArrayDefaultCnt; //마지막 chunk 의 버튼갯수
 
-		self.startPageBtnNumber = self.btnChunkIndex * self.pageBtnCnt + 1; //페이지버튼의 시작넘버
+		self.startPageBtnNumber = self.btnChunkIndex * self.btnArrayDefaultCnt + 1; //페이지버튼의 시작넘버
 
-		for (var i = 0; i < self.pageBtnCnt; i++) {
-			self.pageCtrl[i] = self.startPageBtnNumber + i;
+		self.pageBtnArray = new Array(); //버튼배열 초기화
+		if (self.btnChunkCnt == self.currentChunkNumber) { //마지막 btn chunk 이면
+			for (var i = 0; i < lastChunkBtnCnt; i++) {
+				self.pageBtnArray[i] = self.startPageBtnNumber + i;
+			}
+		} else {
+			for (var i = 0; i < self.btnArrayDefaultCnt; i++) {
+				self.pageBtnArray[i] = self.startPageBtnNumber + i;
+			}
 		}
 	}
 
 	self.newNextPage = function() {
-		self.main.page = self.startPageBtnNumber + self.pageBtnCnt; //다음화면의 페이지버튼의 시작넘버
+		if (self.currentChunkNumber == self.btnChunkCnt) {
+			return;
+		}
+		self.main.page = self.startPageBtnNumber + self.btnArrayDefaultCnt; //다음화면의 페이지버튼의 시작넘버
 		self.btnChunkIndex++;
+		self.currentChunkNumber++;
 		//alert(self.main.page);
 		self.fetchBoards();
 
 	};
 
 	self.newPreviousPage = function() {
-		self.main.page = self.startPageBtnNumber - self.pageBtnCnt; //이전화면의 페이지버튼의 시작넘버
+		if (self.currentChunkNumber == 1) {
+			return;
+		}
+		self.main.page = self.startPageBtnNumber - self.btnArrayDefaultCnt; //이전화면의 페이지버튼의 시작넘버
 		self.btnChunkIndex--;
+		self.currentChunkNumber--;
 		//alert(self.main.page);
 		self.fetchBoards();
 
