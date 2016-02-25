@@ -119,10 +119,10 @@
                 , totalPages : <span ng-bind="ctrl.main.totalPages">totalPages</span>
                 , totalElements : <span ng-bind="ctrl.main.totalElements">totalElements</span>
             </div>
-            <div>
+            <!--<div>
                 <button type="button" ng-click="ctrl.previousPage()" class="btn btn-success custom-width" ng-disabled="ctrl.main.firstPage">이전</button>
                 <button type="button" ng-click="ctrl.nextPage()" class="btn btn-success custom-width" ng-disabled="ctrl.main.lastPage">다음</button>
-            </div>
+            </div>-->
             <div class="modal-footer no-margin-top">
                 <button class="btn btn-sm btn-danger pull-left" data-dismiss="modal">
                     <i class="ace-icon fa fa-times"></i>
@@ -131,36 +131,25 @@
 
                 <ul class="pagination pull-right no-margin">
                     <!--<li class="prev disabled" ng-click="ctrl.previousPage()">-->
-                    <li class="prev" ng-click="ctrl.newPreviousPage()">
+                    <li ng-class="ctrl.getPrevPageBtnClass()" ng-click="ctrl.newPreviousPage()">
                         <a href="#">
                             <i class="ace-icon fa fa-angle-double-left"></i>
                         </a>
                     </li>
 
-                    <li ng-click="ctrl.previousPage()">
+                    <li ng-class="ctrl.getPreviousPageClass()" ng-click="ctrl.previousPage()">
                         <a href="#">이전</a>
                     </li>
 
-                    <li ng-repeat="n in ctrl.pageBtnArray" ng-click="ctrl.movePage(n)">
-                        <a href="#" ng-bind="n"></a>
-                    </li>
-                    <!--<li class="active" ng-click="ctrl.movePage(1)">
-                        <a href="#">1</a>
+                    <li ng-class="ctrl.getPageBtnClass(n)" ng-repeat="n in ctrl.pageBtnArray" ng-click="ctrl.movePage(n)">
+                        <a href="#" ng-bind="n" ></a>
                     </li>
 
-                    <li ng-click="ctrl.movePage(2)">
-                        <a href="#">2</a>
-                    </li>
-
-                    <li ng-click="ctrl.movePage(3)">
-                        <a href="#">3</a>
-                    </li>-->
-
-                    <li ng-click="ctrl.nextPage()">
+                    <li ng-class="ctrl.getNextPageClass()" ng-click="ctrl.nextPage()">
                         <a href="#">다음</a>
                     </li>
 
-                    <li class="next" ng-click="ctrl.newNextPage()">
+                    <li ng-class="ctrl.getNextPageBtnClass()" ng-click="ctrl.newNextPage()">
                         <a href="#">
                             <i class="ace-icon fa fa-angle-double-right"></i>
                         </a>

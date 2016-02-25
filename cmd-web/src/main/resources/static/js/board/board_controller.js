@@ -43,6 +43,36 @@ App.controller('AppController', ['$scope', 'BoardService', function($scope, Boar
 		}
 	}
 
+	self.getPageBtnClass = function(n) {
+		//alert(n + ":" + self.main.page);
+		return n == self.main.page ? "active" : "";
+	}
+
+	self.getPrevPageBtnClass = function() {
+		if (self.currentChunkNumber == 1) {
+			return "prev disabled";
+		} else {
+			return "prev";
+		}
+	}
+
+	self.getNextPageBtnClass = function() {
+		if (self.currentChunkNumber == self.btnChunkCnt) {
+			return "next disabled";
+		} else {
+			return "next";
+		}
+	}
+
+	self.getPreviousPageClass = function() {
+		//alert(self.currentChunkNumber + ":" + self.btnArrayDefaultCnt );
+		return self.main.page > self.startPageBtnNumber ? "" : "disabled";
+	}
+
+	self.getNextPageClass = function() {
+		return self.main.page < self.currentChunkNumber * self.btnArrayDefaultCnt ? "" : "disabled";
+	}
+
 	/**
 	 * 다음 버튼배열 덩어리로 이동
 	 */
@@ -73,12 +103,6 @@ App.controller('AppController', ['$scope', 'BoardService', function($scope, Boar
 
 	};
 
-	self.searchParam = {
-		dateBegin: '',
-		dateEnd: '',
-		shippingCompanyCode:''
-	}
-
 	self.mainInit = function() {
 		self.main.page = 1;
 		self.main.size = 10;
@@ -87,29 +111,7 @@ App.controller('AppController', ['$scope', 'BoardService', function($scope, Boar
 		self.main.lastPage = false;
 		self.main.totalElements = 10;
 	}
-	self.search = function() {
-		self.mainInit(); //페이징관련 초기화
-		var $datePicker = $("#order-datepicker");
-		var datepickerData = $datePicker.data('daterangepicker');
-		self.searchParam.dateBegin = datepickerData.startDate.format("YYYY-MM-DD");
-		self.searchParam.dateEnd = datepickerData.endDate.format("YYYY-MM-DD");
 
-		BoardService.searchBoards(self.main, self.searchParam)
-			.then(
-			function(d) {
-				self.boards = d.content;
-				self.main.page = d.number + 1;
-				self.main.size = d.size;
-				self.main.totalPages = d.totalPages;
-				self.main.firstPage = d.firstPage;
-				self.main.lastPage = d.lastPage;
-				self.main.totalElements = d.totalElements;
-			},
-			function(errResponse){
-				console.error('Error while fetching Currencies');
-			}
-		);
-	}
 
 	self.fetchBoards = function(){
 		BoardService.fetchBoards(self.main)
@@ -132,17 +134,16 @@ App.controller('AppController', ['$scope', 'BoardService', function($scope, Boar
 	};
 
 	self.fetchBoards();
-	//self.search();
 
 	self.nextPage = function() {   //다음버튼의 페이지로 이동
-		if (self.main.page < self.main.totalPages) {
+		if (self.main.page < self.currentChunkNumber * self.btnArrayDefaultCnt) {
 			self.main.page++;
 			self.fetchBoards();
 		}
 	};
 
 	self.previousPage = function() {  //이전버튼의 페이지로 이동
-		if (self.main.page > 1) {
+		if (self.main.page > self.startPageBtnNumber) {
 			self.main.page--;
 			self.fetchBoards();
 		}
@@ -153,5 +154,34 @@ App.controller('AppController', ['$scope', 'BoardService', function($scope, Boar
 		self.fetchBoards();
 	};
 
+	/*self.searchParam = {
+		dateBegin: '',
+		dateEnd: '',
+		shippingCompanyCode:''
+	}*/
+	//self.search();
+	/*self.search = function() {
+		self.mainInit(); //페이징관련 초기화
+		var $datePicker = $("#order-datepicker");
+		var datepickerData = $datePicker.data('daterangepicker');
+		self.searchParam.dateBegin = datepickerData.startDate.format("YYYY-MM-DD");
+		self.searchParam.dateEnd = datepickerData.endDate.format("YYYY-MM-DD");
+
+		BoardService.searchBoards(self.main, self.searchParam)
+			.then(
+			function(d) {
+				self.boards = d.content;
+				self.main.page = d.number + 1;
+				self.main.size = d.size;
+				self.main.totalPages = d.totalPages;
+				self.main.firstPage = d.firstPage;
+				self.main.lastPage = d.lastPage;
+				self.main.totalElements = d.totalElements;
+			},
+			function(errResponse){
+				console.error('Error while fetching Currencies');
+			}
+		);
+	}*/
 
 }]);
