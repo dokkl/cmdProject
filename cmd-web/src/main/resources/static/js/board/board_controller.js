@@ -17,13 +17,11 @@ App.controller('AppController', ['$scope', 'BoardService', function($scope, Boar
 		totalElements: 10,
 	};
 
-
-
-	self.pageBtnArray =[];
-	self.btnArrayDefaultCnt = 5;
-	self.btnChunkIndex = 0;
-	self.startPageBtnNumber = 1;
-	self.currentChunkNumber = 1;
+	self.pageBtnArray =[];       //한화면에 보여지는 페이지버튼index가 들어있는 배열
+	self.btnArrayDefaultCnt = 5; //한화면에 보여지는 페이지버튼 수
+	self.btnChunkIndex = 0;      //버튼배열 덩어리의 총 갯수
+	self.startPageBtnNumber = 1; //버튼배열의 첫번째 버튼번호
+	self.currentChunkNumber = 1; //현재 버튼배열 덩어리의 index
 	self.btnChunkCnt = 0;
 
 	self.settingPageCtrl = function(totalPages, currentPage) {
@@ -45,6 +43,9 @@ App.controller('AppController', ['$scope', 'BoardService', function($scope, Boar
 		}
 	}
 
+	/**
+	 * 다음 버튼배열 덩어리로 이동
+	 */
 	self.newNextPage = function() {
 		if (self.currentChunkNumber == self.btnChunkCnt) {
 			return;
@@ -57,6 +58,9 @@ App.controller('AppController', ['$scope', 'BoardService', function($scope, Boar
 
 	};
 
+	/**
+	 * 이전 버튼배열 덩어리로 이동
+	 */
 	self.newPreviousPage = function() {
 		if (self.currentChunkNumber == 1) {
 			return;
@@ -119,7 +123,7 @@ App.controller('AppController', ['$scope', 'BoardService', function($scope, Boar
 				self.main.lastPage = d.lastPage;
 				self.main.totalElements = d.totalElements;
 
-				self.settingPageCtrl(d.totalPages, d.number + 1);
+				self.settingPageCtrl(d.totalPages, d.number + 1);  //버튼배열 세팅
 			},
 			function(errResponse){
 				console.error('Error while fetching Currencies');
@@ -130,21 +134,21 @@ App.controller('AppController', ['$scope', 'BoardService', function($scope, Boar
 	self.fetchBoards();
 	//self.search();
 
-	self.nextPage = function() {
+	self.nextPage = function() {   //다음버튼의 페이지로 이동
 		if (self.main.page < self.main.totalPages) {
 			self.main.page++;
 			self.fetchBoards();
 		}
 	};
 
-	self.previousPage = function() {
+	self.previousPage = function() {  //이전버튼의 페이지로 이동
 		if (self.main.page > 1) {
 			self.main.page--;
 			self.fetchBoards();
 		}
 	};
 
-	self.movePage = function(currentPage) {
+	self.movePage = function(currentPage) {   //선택한 버튼의 페이지로 이동
 		self.main.page = currentPage;
 		self.fetchBoards();
 	};

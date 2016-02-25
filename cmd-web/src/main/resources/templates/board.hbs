@@ -137,6 +137,10 @@
                         </a>
                     </li>
 
+                    <li ng-click="ctrl.previousPage()">
+                        <a href="#">이전</a>
+                    </li>
+
                     <li ng-repeat="n in ctrl.pageBtnArray" ng-click="ctrl.movePage(n)">
                         <a href="#" ng-bind="n"></a>
                     </li>
@@ -151,6 +155,10 @@
                     <li ng-click="ctrl.movePage(3)">
                         <a href="#">3</a>
                     </li>-->
+
+                    <li ng-click="ctrl.nextPage()">
+                        <a href="#">다음</a>
+                    </li>
 
                     <li class="next" ng-click="ctrl.newNextPage()">
                         <a href="#">
