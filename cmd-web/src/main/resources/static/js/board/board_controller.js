@@ -21,18 +21,19 @@ App.controller('AppController', ['$scope', 'BoardService', function($scope, Boar
 	self.btnArrayDefaultCnt = 5; //한화면에 보여지는 페이지버튼 수
 	self.startPageBtnNumber = 1; //버튼배열의 첫번째 버튼번호
 	self.currentChunkNumber = 1; //현재 버튼배열 덩어리의 index
-	self.btnChunkCnt = 0;
+	self.btnChunkCnt = 0;        //버튼배열 덩어리의 총 갯수
+	self.lastChunkBtnCnt = 0;    //마지막 chunk 의 버튼갯수
 
 	self.settingPageCtrl = function(totalPages, currentPage) {
 
 		self.btnChunkCnt = parseInt(totalPages / self.btnArrayDefaultCnt) + 1;   //버튼덩어리 수
-		var lastChunkBtnCnt = totalPages % self.btnArrayDefaultCnt; //마지막 chunk 의 버튼갯수
+		self.lastChunkBtnCnt = totalPages % self.btnArrayDefaultCnt; //마지막 chunk 의 버튼갯수
 
 		self.startPageBtnNumber = ((self.currentChunkNumber - 1) * self.btnArrayDefaultCnt) + 1; //페이지버튼의 시작넘버
 
 		self.pageBtnArray = new Array(); //버튼배열 초기화
 		if (self.btnChunkCnt == self.currentChunkNumber) { //마지막 btn chunk 이면
-			for (var i = 0; i < lastChunkBtnCnt; i++) {
+			for (var i = 0; i < self.lastChunkBtnCnt; i++) {
 				self.pageBtnArray[i] = self.startPageBtnNumber + i;
 			}
 		} else {
@@ -67,6 +68,12 @@ App.controller('AppController', ['$scope', 'BoardService', function($scope, Boar
 	}
 
 	self.getNextPageClass = function() {
+		//alert(self.main.page + ":" + self.main.totalPages);
+		if (self.pageBtnArray.length == 1 || self.main.totalPages == self.main.page) {
+		//if (self.pageBtnArray.length == 1 || self.pageBtnArray.length == self.lastChunkBtnCnt) {
+			return "disabled";
+		}
+		//alert(self.currentChunkNumber + ":" + self.btnArrayDefaultCnt);
 		return self.main.page < self.currentChunkNumber * self.btnArrayDefaultCnt ? "" : "disabled";
 	}
 
@@ -128,6 +135,10 @@ App.controller('AppController', ['$scope', 'BoardService', function($scope, Boar
 	self.fetchBoards();
 
 	self.nextPage = function() {   //다음버튼의 페이지로 이동
+		if (self.pageBtnArray.length == 1 || self.main.totalPages == self.main.page) {
+			return;
+		}
+
 		if (self.main.page < self.currentChunkNumber * self.btnArrayDefaultCnt) {
 			self.main.page++;
 			self.fetchBoards();

@@ -22,17 +22,18 @@ App.controller('AppController', ['$scope', 'BoardService', function($scope, Boar
 	self.startPageBtnNumber = 1; //버튼배열의 첫번째 버튼번호
 	self.currentChunkNumber = 1; //현재 버튼배열 덩어리의 index
 	self.btnChunkCnt = 0;        //버튼배열 덩어리의 총 갯수
+	self.lastChunkBtnCnt = 0;    //마지막 chunk 의 버튼갯수
 
 	self.settingPageCtrl = function(totalPages, currentPage) {
 
 		self.btnChunkCnt = parseInt(totalPages / self.btnArrayDefaultCnt) + 1;   //버튼덩어리 수
-		var lastChunkBtnCnt = totalPages % self.btnArrayDefaultCnt; //마지막 chunk 의 버튼갯수
+		self.lastChunkBtnCnt = totalPages % self.btnArrayDefaultCnt; //마지막 chunk 의 버튼갯수
 
 		self.startPageBtnNumber = ((self.currentChunkNumber - 1) * self.btnArrayDefaultCnt) + 1; //페이지버튼의 시작넘버
 
 		self.pageBtnArray = new Array(); //버튼배열 초기화
 		if (self.btnChunkCnt == self.currentChunkNumber) { //마지막 btn chunk 이면
-			for (var i = 0; i < lastChunkBtnCnt; i++) {
+			for (var i = 0; i < self.lastChunkBtnCnt; i++) {
 				self.pageBtnArray[i] = self.startPageBtnNumber + i;
 			}
 		} else {
@@ -63,14 +64,16 @@ App.controller('AppController', ['$scope', 'BoardService', function($scope, Boar
 	}
 
 	self.getPreviousPageClass = function() {
-		//alert(self.currentChunkNumber + ":" + self.btnArrayDefaultCnt );
 		return self.main.page > self.startPageBtnNumber ? "" : "disabled";
 	}
 
 	self.getNextPageClass = function() {
-		if (self.btnChunkCnt == 1) {
+		//alert(self.main.page + ":" + self.main.totalPages);
+		if (self.pageBtnArray.length == 1 || self.main.totalPages == self.main.page) {
+			//if (self.pageBtnArray.length == 1 || self.pageBtnArray.length == self.lastChunkBtnCnt) {
 			return "disabled";
 		}
+		//alert(self.currentChunkNumber + ":" + self.btnArrayDefaultCnt);
 		return self.main.page < self.currentChunkNumber * self.btnArrayDefaultCnt ? "" : "disabled";
 	}
 
@@ -95,10 +98,8 @@ App.controller('AppController', ['$scope', 'BoardService', function($scope, Boar
 			return;
 		}
 		self.main.page = self.startPageBtnNumber - self.btnArrayDefaultCnt; //이전화면의 페이지버튼의 시작넘버
-		//self.btnChunkIndex--;
 		self.currentChunkNumber--;
 		self.fetchBoards();
-
 	};
 
 	self.mainInit = function() {
@@ -134,9 +135,10 @@ App.controller('AppController', ['$scope', 'BoardService', function($scope, Boar
 	self.fetchBoards();
 
 	self.nextPage = function() {   //다음버튼의 페이지로 이동
-		if (pageBtnArray.length == 1) {
+		if (self.pageBtnArray.length == 1 || self.main.totalPages == self.main.page) {
 			return;
 		}
+
 		if (self.main.page < self.currentChunkNumber * self.btnArrayDefaultCnt) {
 			self.main.page++;
 			self.fetchBoards();
@@ -156,33 +158,33 @@ App.controller('AppController', ['$scope', 'BoardService', function($scope, Boar
 	};
 
 	/*self.searchParam = {
-		dateBegin: '',
-		dateEnd: '',
-		shippingCompanyCode:''
-	}*/
+	 dateBegin: '',
+	 dateEnd: '',
+	 shippingCompanyCode:''
+	 }*/
 	//self.search();
 	/*self.search = function() {
-		self.mainInit(); //페이징관련 초기화
-		var $datePicker = $("#order-datepicker");
-		var datepickerData = $datePicker.data('daterangepicker');
-		self.searchParam.dateBegin = datepickerData.startDate.format("YYYY-MM-DD");
-		self.searchParam.dateEnd = datepickerData.endDate.format("YYYY-MM-DD");
+	 self.mainInit(); //페이징관련 초기화
+	 var $datePicker = $("#order-datepicker");
+	 var datepickerData = $datePicker.data('daterangepicker');
+	 self.searchParam.dateBegin = datepickerData.startDate.format("YYYY-MM-DD");
+	 self.searchParam.dateEnd = datepickerData.endDate.format("YYYY-MM-DD");
 
-		BoardService.searchBoards(self.main, self.searchParam)
-			.then(
-			function(d) {
-				self.boards = d.content;
-				self.main.page = d.number + 1;
-				self.main.size = d.size;
-				self.main.totalPages = d.totalPages;
-				self.main.firstPage = d.firstPage;
-				self.main.lastPage = d.lastPage;
-				self.main.totalElements = d.totalElements;
-			},
-			function(errResponse){
-				console.error('Error while fetching Currencies');
-			}
-		);
-	}*/
+	 BoardService.searchBoards(self.main, self.searchParam)
+	 .then(
+	 function(d) {
+	 self.boards = d.content;
+	 self.main.page = d.number + 1;
+	 self.main.size = d.size;
+	 self.main.totalPages = d.totalPages;
+	 self.main.firstPage = d.firstPage;
+	 self.main.lastPage = d.lastPage;
+	 self.main.totalElements = d.totalElements;
+	 },
+	 function(errResponse){
+	 console.error('Error while fetching Currencies');
+	 }
+	 );
+	 }*/
 
 }]);
