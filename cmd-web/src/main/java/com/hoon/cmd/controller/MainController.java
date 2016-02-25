@@ -23,4 +23,9 @@ public class MainController {
     public String board() {
         return "board";
     }
+
+    @RequestMapping("/notice")
+    public String notice() {
+        return "notice";
+    }
 }

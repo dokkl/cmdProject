@@ -1,5 +1,6 @@
 package com.hoon.cmd.controller;
 
+import com.hoon.cmd.domain.board.BoardType;
 import com.hoon.cmd.domain.board.BoardVo;
 import com.hoon.cmd.service.board.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,13 @@ public class BoardRestController {
     @RequestMapping(value = "/rest/board", method = RequestMethod.GET)
     public Page<BoardVo> getBoards(@RequestParam("page") int page,
                                   @RequestParam("size") int size) {
-        return boardService.getBoards(createPageRequest(page, size));
+        return boardService.getBoards(createPageRequest(page, size), BoardType.BBS_NORMAL);
+    }
+
+    @RequestMapping(value = "/rest/notice", method = RequestMethod.GET)
+    public Page<BoardVo> getNoticeBbs(@RequestParam("page") int page,
+                                   @RequestParam("size") int size) {
+        return boardService.getBoards(createPageRequest(page, size), BoardType.BBS_NOTICE);
     }
 
     private Pageable createPageRequest(int page, int size) {

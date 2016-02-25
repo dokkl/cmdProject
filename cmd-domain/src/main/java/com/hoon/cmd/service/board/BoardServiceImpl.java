@@ -4,6 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.hoon.cmd.domain.board.Board;
 import com.hoon.cmd.domain.board.BoardRepository;
+import com.hoon.cmd.domain.board.BoardType;
 import com.hoon.cmd.domain.board.BoardVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,8 +24,9 @@ public class BoardServiceImpl implements BoardService {
     private BoardRepository boardRepository;
 
     @Override
-    public Page<BoardVo> getBoards(Pageable pageable) {
-        Page<Board> page = boardRepository.findAll(pageable);
+    public Page<BoardVo> getBoards(Pageable pageable, BoardType boardType) {
+        //Page<Board> page = boardRepository.findAll(pageable);
+        Page<Board> page = boardRepository.findByBoardType(boardType, pageable);
         return new PageImpl<BoardVo>(convert(page.getContent()), pageable, page.getTotalElements());
     }
 

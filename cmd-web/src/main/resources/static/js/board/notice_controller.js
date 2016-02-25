@@ -21,7 +21,7 @@ App.controller('AppController', ['$scope', 'BoardService', function($scope, Boar
 	self.btnArrayDefaultCnt = 5; //한화면에 보여지는 페이지버튼 수
 	self.startPageBtnNumber = 1; //버튼배열의 첫번째 버튼번호
 	self.currentChunkNumber = 1; //현재 버튼배열 덩어리의 index
-	self.btnChunkCnt = 0;
+	self.btnChunkCnt = 0;        //버튼배열 덩어리의 총 갯수
 
 	self.settingPageCtrl = function(totalPages, currentPage) {
 
@@ -63,10 +63,14 @@ App.controller('AppController', ['$scope', 'BoardService', function($scope, Boar
 	}
 
 	self.getPreviousPageClass = function() {
+		//alert(self.currentChunkNumber + ":" + self.btnArrayDefaultCnt );
 		return self.main.page > self.startPageBtnNumber ? "" : "disabled";
 	}
 
 	self.getNextPageClass = function() {
+		if (self.btnChunkCnt == 1) {
+			return "disabled";
+		}
 		return self.main.page < self.currentChunkNumber * self.btnArrayDefaultCnt ? "" : "disabled";
 	}
 
@@ -91,8 +95,10 @@ App.controller('AppController', ['$scope', 'BoardService', function($scope, Boar
 			return;
 		}
 		self.main.page = self.startPageBtnNumber - self.btnArrayDefaultCnt; //이전화면의 페이지버튼의 시작넘버
+		//self.btnChunkIndex--;
 		self.currentChunkNumber--;
 		self.fetchBoards();
+
 	};
 
 	self.mainInit = function() {
@@ -128,6 +134,9 @@ App.controller('AppController', ['$scope', 'BoardService', function($scope, Boar
 	self.fetchBoards();
 
 	self.nextPage = function() {   //다음버튼의 페이지로 이동
+		if (pageBtnArray.length == 1) {
+			return;
+		}
 		if (self.main.page < self.currentChunkNumber * self.btnArrayDefaultCnt) {
 			self.main.page++;
 			self.fetchBoards();

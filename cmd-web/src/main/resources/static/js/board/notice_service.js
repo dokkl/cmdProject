@@ -8,7 +8,7 @@ App.factory('BoardService', ['$http', '$q', function($http, $q){
 	return {
 
 		fetchBoards: function(main) {
-			return $http.get('/rest/board?page=' + main.page + '&size=' + main.size)
+			return $http.get('/rest/notice?page=' + main.page + '&size=' + main.size)
 				.then(
 				function(response){
 					return response.data;
