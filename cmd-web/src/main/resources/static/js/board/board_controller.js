@@ -43,11 +43,20 @@ App.controller('AppController', ['$scope', 'BoardService', function($scope, Boar
 		}
 	}
 
+	/**
+	 * 페이지 버튼 class 가져오기
+	 * @param n
+	 * @returns {string}
+	 */
 	self.getPageBtnClass = function(n) {
 		return n == self.main.page ? "active" : "";
 	}
 
-	self.getPrevPageBtnClass = function() {
+	/**
+	 * << 버튼 class 가져오기
+	 * @returns {*}
+	 */
+	self.getPreviousPageChunkClass = function() {
 		if (self.currentChunkNumber == 1) {
 			return "prev disabled";
 		} else {
@@ -55,7 +64,11 @@ App.controller('AppController', ['$scope', 'BoardService', function($scope, Boar
 		}
 	}
 
-	self.getNextPageBtnClass = function() {
+	/**
+	 * >> 버튼 class 가져오기
+	 * @returns {*}
+	 */
+	self.getNextPageChunkClass = function() {
 		if (self.currentChunkNumber == self.btnChunkCnt) {
 			return "next disabled";
 		} else {
@@ -63,10 +76,18 @@ App.controller('AppController', ['$scope', 'BoardService', function($scope, Boar
 		}
 	}
 
+	/**
+	 * 이전 버튼 class 가져오기
+	 * @returns {string}
+	 */
 	self.getPreviousPageClass = function() {
 		return self.main.page > self.startPageBtnNumber ? "" : "disabled";
 	}
 
+	/**
+	 * 다음 버튼 class 가져오기
+	 * @returns {*}
+	 */
 	self.getNextPageClass = function() {
 		//alert(self.main.page + ":" + self.main.totalPages);
 		if (self.pageBtnArray.length == 1 || self.main.totalPages == self.main.page) {
@@ -78,9 +99,9 @@ App.controller('AppController', ['$scope', 'BoardService', function($scope, Boar
 	}
 
 	/**
-	 * 다음 버튼배열 덩어리로 이동
+	 * ( >> click ) 다음의 버튼배열 덩어리로 이동
 	 */
-	self.newNextPage = function() {
+	self.nextPageChunk = function() {
 		if (self.currentChunkNumber == self.btnChunkCnt) {
 			return;
 		}
@@ -91,14 +112,47 @@ App.controller('AppController', ['$scope', 'BoardService', function($scope, Boar
 	};
 
 	/**
-	 * 이전 버튼배열 덩어리로 이동
+	 * ( << click ) 이전의 버튼배열 덩어리로 이동
 	 */
-	self.newPreviousPage = function() {
+	self.previousPageChunk = function() {
 		if (self.currentChunkNumber == 1) {
 			return;
 		}
 		self.main.page = self.startPageBtnNumber - self.btnArrayDefaultCnt; //이전화면의 페이지버튼의 시작넘버
 		self.currentChunkNumber--;
+		self.fetchBoards();
+	};
+
+	/**
+	 * (다음 버튼 click) 다음 페이지로 이동
+	 */
+	self.nextPage = function() {
+		if (self.pageBtnArray.length == 1 || self.main.totalPages == self.main.page) {
+			return;
+		}
+
+		if (self.main.page < self.currentChunkNumber * self.btnArrayDefaultCnt) {
+			self.main.page++;
+			self.fetchBoards();
+		}
+	};
+
+	/**
+	 * (이전 버튼 click) 이전 페이지로 이동
+	 */
+	self.previousPage = function() {
+		if (self.main.page > self.startPageBtnNumber) {
+			self.main.page--;
+			self.fetchBoards();
+		}
+	};
+
+	/**
+	 * 선택 (click) 한 페이지로 이동
+	 * @param currentPage
+	 */
+	self.movePage = function(currentPage) {
+		self.main.page = currentPage;
 		self.fetchBoards();
 	};
 
@@ -110,7 +164,6 @@ App.controller('AppController', ['$scope', 'BoardService', function($scope, Boar
 		self.main.lastPage = false;
 		self.main.totalElements = 10;
 	}
-
 
 	self.fetchBoards = function(){
 		BoardService.fetchBoards(self.main)
@@ -134,28 +187,6 @@ App.controller('AppController', ['$scope', 'BoardService', function($scope, Boar
 
 	self.fetchBoards();
 
-	self.nextPage = function() {   //다음버튼의 페이지로 이동
-		if (self.pageBtnArray.length == 1 || self.main.totalPages == self.main.page) {
-			return;
-		}
-
-		if (self.main.page < self.currentChunkNumber * self.btnArrayDefaultCnt) {
-			self.main.page++;
-			self.fetchBoards();
-		}
-	};
-
-	self.previousPage = function() {  //이전버튼의 페이지로 이동
-		if (self.main.page > self.startPageBtnNumber) {
-			self.main.page--;
-			self.fetchBoards();
-		}
-	};
-
-	self.movePage = function(currentPage) {   //선택한 버튼의 페이지로 이동
-		self.main.page = currentPage;
-		self.fetchBoards();
-	};
 
 	/*self.searchParam = {
 		dateBegin: '',
