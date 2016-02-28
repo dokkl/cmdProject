@@ -44,25 +44,17 @@ App.controller('AppController', ['$scope', 'BoardService', function($scope, Boar
 	}
 
 	/**
-	 * 페이지 버튼 class 가져오기
-	 * @param n
-	 * @returns {string}
+	 * ( >> click ) 다음의 버튼배열 덩어리로 이동
 	 */
-	self.getPageBtnClass = function(n) {
-		return n == self.main.page ? "active" : "";
-	}
-
-	/**
-	 * << 버튼 class 가져오기
-	 * @returns {*}
-	 */
-	self.getPreviousPageChunkClass = function() {
-		if (self.currentChunkNumber == 1) {
-			return "prev disabled";
-		} else {
-			return "prev";
+	self.nextPageChunk = function() {
+		if (self.currentChunkNumber == self.btnChunkCnt) {
+			return;
 		}
-	}
+		self.main.page = self.startPageBtnNumber + self.btnArrayDefaultCnt; //다음화면의 페이지버튼의 시작넘버
+		self.currentChunkNumber++;
+		self.fetchBoards();
+
+	};
 
 	/**
 	 * >> 버튼 class 가져오기
@@ -77,41 +69,6 @@ App.controller('AppController', ['$scope', 'BoardService', function($scope, Boar
 	}
 
 	/**
-	 * 이전 버튼 class 가져오기
-	 * @returns {string}
-	 */
-	self.getPreviousPageClass = function() {
-		return self.main.page > self.startPageBtnNumber ? "" : "disabled";
-	}
-
-	/**
-	 * 다음 버튼 class 가져오기
-	 * @returns {*}
-	 */
-	self.getNextPageClass = function() {
-		//alert(self.main.page + ":" + self.main.totalPages);
-		if (self.pageBtnArray.length == 1 || self.main.totalPages == self.main.page) {
-		//if (self.pageBtnArray.length == 1 || self.pageBtnArray.length == self.lastChunkBtnCnt) {
-			return "disabled";
-		}
-		//alert(self.currentChunkNumber + ":" + self.btnArrayDefaultCnt);
-		return self.main.page < self.currentChunkNumber * self.btnArrayDefaultCnt ? "" : "disabled";
-	}
-
-	/**
-	 * ( >> click ) 다음의 버튼배열 덩어리로 이동
-	 */
-	self.nextPageChunk = function() {
-		if (self.currentChunkNumber == self.btnChunkCnt) {
-			return;
-		}
-		self.main.page = self.startPageBtnNumber + self.btnArrayDefaultCnt; //다음화면의 페이지버튼의 시작넘버
-		self.currentChunkNumber++;
-		self.fetchBoards();
-
-	};
-
-	/**
 	 * ( << click ) 이전의 버튼배열 덩어리로 이동
 	 */
 	self.previousPageChunk = function() {
@@ -124,6 +81,18 @@ App.controller('AppController', ['$scope', 'BoardService', function($scope, Boar
 	};
 
 	/**
+	 * << 버튼 class 가져오기
+	 * @returns {*}
+	 */
+	self.getPreviousPageChunkClass = function() {
+		if (self.currentChunkNumber == 1) {
+			return "prev disabled";
+		} else {
+			return "prev";
+		}
+	}
+
+	/**
 	 * (다음 버튼 click) 다음 페이지로 이동
 	 */
 	self.nextPage = function() {
@@ -131,21 +100,67 @@ App.controller('AppController', ['$scope', 'BoardService', function($scope, Boar
 			return;
 		}
 
-		if (self.main.page < self.currentChunkNumber * self.btnArrayDefaultCnt) {
+		if (self.main.page == self.currentChunkNumber * self.btnArrayDefaultCnt) {
+			self.nextPageChunk();
+		} else if (self.main.page < self.currentChunkNumber * self.btnArrayDefaultCnt) {
 			self.main.page++;
 			self.fetchBoards();
 		}
 	};
 
 	/**
+	 * 다음 버튼 class 가져오기
+	 * @returns {*}
+	 */
+	self.getNextPageClass = function() {
+		//alert(self.main.page + ":" + self.main.totalPages);
+		if (self.pageBtnArray.length == 1 || self.main.totalPages == self.main.page) {
+			return "disabled";
+		}
+
+		if (self.main.page == self.currentChunkNumber * self.btnArrayDefaultCnt) {
+			return "";
+		} else if (self.main.page < self.currentChunkNumber * self.btnArrayDefaultCnt) {
+			return "";
+		} else {
+			return "disabled";
+		}
+	}
+
+	/**
 	 * (이전 버튼 click) 이전 페이지로 이동
 	 */
 	self.previousPage = function() {
-		if (self.main.page > self.startPageBtnNumber) {
+		if (self.currentChunkNumber > 1 && self.main.page == self.startPageBtnNumber) { //첫번째 chunk가 아니고 현재페이지가 현재chunk의 첫번째btn이면
+			if (self.currentChunkNumber == 1) {
+				return;
+			}
+
+			//alert(self.startPageBtnNumber + ":" + self.btnArrayDefaultCnt);
+			//self.main.page = self.startPageBtnNumber - self.btnArrayDefaultCnt; //이전화면의 페이지버튼의 시작넘버
+			self.main.page = self.startPageBtnNumber - 1; //이전화면의 페이지버튼의 시작넘버
+			self.currentChunkNumber--;
+			self.fetchBoards();
+
+		} else if (self.main.page > self.startPageBtnNumber) {
 			self.main.page--;
 			self.fetchBoards();
 		}
 	};
+
+	/**
+	 * 이전 버튼 class 가져오기
+	 * @returns {string}
+	 */
+	self.getPreviousPageClass = function() {
+		if (self.currentChunkNumber > 1 && self.main.page == self.startPageBtnNumber) {
+	   		return "";
+		} else if (self.main.page > self.startPageBtnNumber) {
+			return "";
+		} else {
+			return "disabled";
+		}
+	}
 
 	/**
 	 * 선택 (click) 한 페이지로 이동
@@ -155,6 +170,15 @@ App.controller('AppController', ['$scope', 'BoardService', function($scope, Boar
 		self.main.page = currentPage;
 		self.fetchBoards();
 	};
+
+	/**
+	 * 페이지 버튼 class 가져오기
+	 * @param n
+	 * @returns {string}
+	 */
+	self.getPageBtnClass = function(n) {
+		return n == self.main.page ? "active" : "";
+	}
 
 	self.mainInit = function() {
 		self.main.page = 1;
