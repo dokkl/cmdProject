@@ -43,6 +43,10 @@ App.controller('AppController', ['$scope', 'BoardService', function($scope, Boar
 		}
 	}
 
+	self.getEmptyDataClass = function() {
+		return self.main.totalElements == 0 ? "" : "hidden";
+	}
+
 	/**
 	 * ( >> click ) 다음의 버튼배열 덩어리로 이동
 	 */

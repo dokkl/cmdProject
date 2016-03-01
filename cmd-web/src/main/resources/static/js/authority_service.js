@@ -5,7 +5,8 @@ App.factory('AuthorityService', ['$http', '$q', function($http, $q){
     return {
 
         fetchAllAuthorities: function() {
-            return $http.get('http://localhost:8080/admin/rest/authority/')
+            //http://localhost:8080/admin/rest/authority/
+            return $http.get('/admin/rest/authority/')
                 .then(
                 function(response){
                     return response.data;
@@ -21,7 +22,7 @@ App.factory('AuthorityService', ['$http', '$q', function($http, $q){
             return $http(
                 {
                     method: 'POST',
-                    url : 'http://localhost:8080/admin/rest/authority/',
+                    url : '/admin/rest/authority/',
                     data : authority,
                     headers: {'Content-Type':'application/json'}
                 }
@@ -39,7 +40,7 @@ App.factory('AuthorityService', ['$http', '$q', function($http, $q){
         },
 
         updateAuthority: function(authority, id){
-            return $http.put('http://localhost:8080/admin/rest/authority/'+id, authority)
+            return $http.put('/admin/rest/authority/'+id, authority)
                 .then(
                 function(response){
                     return response.data;
@@ -52,7 +53,7 @@ App.factory('AuthorityService', ['$http', '$q', function($http, $q){
         },
 
         deleteAuthority: function(id){
-            return $http.delete('http://localhost:8080/admin/rest/authority/'+id)
+            return $http.delete('/admin/rest/authority/'+id)
                 .then(
                 function(response){
                     return response.data;
