@@ -1,0 +1,77 @@
+{{#partial "title"}}대쉬보드{{/partial}}
+{{#partial "content"}}
+	<div class="page-content" ng-app="myApp">
+		<div class="page-header">
+            <h1>
+                Gallery
+                <small>
+                    <i class="ace-icon fa fa-angle-double-right"></i>
+                    responsive photo gallery using colorbox
+                </small>
+            </h1>
+		</div>
+		<!-- /.page-header -->
+        <div class="row">
+            <div class="col-xs-12">
+                <!-- PAGE CONTENT BEGINS -->
+                <div>
+                    <ul class="ace-thumbnails clearfix">
+                        <!-- #section:pages/gallery -->
+                        {{#each imageList}}
+                        <li>
+                            <a href="{{this}}" title="Photo Title" data-rel="colorbox">
+                                <img width="150" height="150" alt="150x150" src="{{this}}" />
+                            </a>
+                            <div class="tags">
+												<span class="label-holder">
+													<span class="label label-info">breakfast</span>
+												</span>
+
+												<span class="label-holder">
+													<span class="label label-danger">fruits</span>
+												</span>
+
+												<span class="label-holder">
+													<span class="label label-success">toast</span>
+												</span>
+
+												<span class="label-holder">
+													<span class="label label-warning arrowed-in">diet</span>
+												</span>
+                            </div>
+
+                            <div class="tools">
+                                <a href="#">
+                                    <i class="ace-icon fa fa-link"></i>
+                                </a>
+
+                                <a href="#">
+                                    <i class="ace-icon fa fa-paperclip"></i>
+                                </a>
+
+                                <a href="#">
+                                    <i class="ace-icon fa fa-pencil"></i>
+                                </a>
+
+                                <a href="#">
+                                    <i class="ace-icon fa fa-times red"></i>
+                                </a>
+                            </div>
+                        </li>
+                        {{/each}}
+                        <!-- /section:pages/gallery.tools -->
+
+                    </ul>
+                </div><!-- PAGE CONTENT ENDS -->
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+	</div>
+{{/partial}}
+{{#partial "page_script"}}
+    <script src="/js/app.js"></script>
+	<script type="text/javascript">
+
+	</script>
+{{/partial}}
+
+{{>layout/layout}}
